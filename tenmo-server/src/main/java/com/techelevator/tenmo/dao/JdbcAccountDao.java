@@ -41,15 +41,14 @@ public class JdbcAccountDao implements AccountDao{
         return account;
     }
 
-    @Override
-    public Account getAccountById(int accountId) throws AccountNotFoundException {
-        String sql = "SELECT * FROM tenmo_account WHERE account_id = ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
-        if (results.next()) {
-            return mapRowToAccount(results);
-        } else {
-            throw new AccountNotFoundException();
-        }
+    public void withdraw(Account account, double transferAmount) {
+        String sql = "UPDATE tenmo_account SET balance = balance - ? WHERE user_id = ?";
+        jdbcTemplate.update(sql, transferAmount, account.getUserId());
+    }
+
+    public void deposit(Account account, double transferAmount) {
+        String sql = "UPDATE tenmo_account SET balance = balance + ? WHERE user_id = ?";
+        jdbcTemplate.update(sql, transferAmount, account.getUserId());
     }
 
     @Override

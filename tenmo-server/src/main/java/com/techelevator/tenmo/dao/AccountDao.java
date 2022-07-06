@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface AccountDao {
 
-    List<Account> findAllAccounts();
+    public List<Account> findAllAccounts();
 
-    Account getAccountById(int accountId) throws AccountNotFoundException;
+    public void withdraw(Account account, double transferAmount);
+
+    public void deposit(Account account, double transferAmount);
 
     double getBalanceByUserId(int userId);
 }
