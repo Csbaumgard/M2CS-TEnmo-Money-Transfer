@@ -46,9 +46,9 @@ public class JdbcTransferDao implements TransferDao {
                 break;
             }
         }
-        if (!finished) {
-            throw new Exception();
-        }
+//        if (!finished) {
+//            throw new Exception();
+//        }
 
 
         return null;
