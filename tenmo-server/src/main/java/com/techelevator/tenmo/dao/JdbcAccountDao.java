@@ -61,8 +61,8 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public Account getAccountByAccountId(int id) {
+    public Account getAccountByAccountId(int accountId) {
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?";
-        return mapRowToAccount((jdbcTemplate.queryForRowSet(sql, id)));
+        return mapRowToAccount((jdbcTemplate.queryForRowSet(sql, accountId)));
     }
 }
