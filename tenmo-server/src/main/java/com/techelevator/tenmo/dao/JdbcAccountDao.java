@@ -41,18 +41,20 @@ public class JdbcAccountDao implements AccountDao{
         return account;
     }
 
+    @Override
     public void withdraw(Account account, double transferAmount) {
         String sql = "UPDATE tenmo_account SET balance = balance - ? WHERE user_id = ?";
         jdbcTemplate.update(sql, transferAmount, account.getUserId());
     }
 
+    @Override
     public void deposit(Account account, double transferAmount) {
         String sql = "UPDATE tenmo_account SET balance = balance + ? WHERE user_id = ?";
         jdbcTemplate.update(sql, transferAmount, account.getUserId());
     }
 
     @Override
-    public double getBalanceByUserId(int userId) {
+    public double getBalanceByUserId(int userId) { //might need to refactor to use user.name and Principal? idfk
         String sql = "SELECT balance FROM tenmo_account WHERE user_id = ?";
         double balance = jdbcTemplate.queryForObject(sql, double.class, userId);
         return balance;
