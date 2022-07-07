@@ -18,5 +18,4 @@ public class AccountController {
     public double getBalance(@PathVariable int userId) {
         return jdbcAccountDao.getBalanceByUserId(userId);
     }
-
 }

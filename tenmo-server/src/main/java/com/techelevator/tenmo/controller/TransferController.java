@@ -10,9 +10,17 @@ import java.util.List;
 
 @RestController
 public class TransferController {
-    TransferDao transferDao;
-    TransferStatusDao transferStatusDao;
-    TransferTypeDao transferTypeDao;
+    private TransferDao transferDao;
+    private TransferStatusDao transferStatusDao;
+    private TransferTypeDao transferTypeDao;
+    private AccountDao accountDao;
+
+    public TransferController(TransferDao transferDao, TransferStatusDao transferStatusDao, TransferTypeDao transferTypeDao, AccountDao accountDao) {
+        this.transferDao = transferDao;
+        this.transferStatusDao = transferStatusDao;
+        this.transferTypeDao = transferTypeDao;
+        this.accountDao = accountDao;
+    }
 
     @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.GET)
     public List<Transfer> listAllTransfers() {
@@ -44,8 +52,13 @@ public class TransferController {
         return transferStatusDao.getTransferStatusFromId(id);
     }
 
-    @RequestMapping(path = "/transfer_status/", method = RequestMethod.GET)
+    @RequestMapping(path = "/transfer_status/{desc}", method = RequestMethod.GET)
     public TransferStatus getTransferStatusFromDesc(@RequestParam String desc) {
         return transferStatusDao.getTransferStatusFromDesc(desc);
+    }
+
+    @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.POST)
+    public void create(@RequestBody Transfer transfer) {
+        transferDao.create(transfer);
     }
 }
