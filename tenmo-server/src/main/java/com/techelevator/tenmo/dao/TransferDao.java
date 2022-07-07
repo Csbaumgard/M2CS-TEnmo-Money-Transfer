@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface TransferDao {
 
-    List<Transfer> list();
+    List<Transfer> listAllTransfers();
 
     void create(Transfer transfer);
 
-    Transfer get(int transferId);
+    Transfer getByTransferId(int transferId);
 
-    Transfer update(Transfer transfer, int transferId);
+    List<Transfer> getAllTransfersForUserId(int userId);
+
+    void update(Transfer transfer);
 
     void delete(int transferId);
 
