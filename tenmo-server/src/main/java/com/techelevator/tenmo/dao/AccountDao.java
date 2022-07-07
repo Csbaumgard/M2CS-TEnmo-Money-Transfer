@@ -15,4 +15,6 @@ public interface AccountDao {
     public void deposit(Account account, double transferAmount);
 
     double getBalanceByUserId(int userId);
+
+    public Account getAccountByAccountId(int id);
 }

@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.*;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferStatus;
 import com.techelevator.tenmo.model.TransferType;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,8 +59,16 @@ public class TransferController {
         return transferStatusDao.getTransferStatusFromDesc(desc);
     }
 
-    @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/tenmo_transfer/{id}", method = RequestMethod.POST)
     public void create(@RequestBody Transfer transfer) {
+        Account accountFrom = accountDao.getAccountByAccountId(transfer.getAccountFrom());
+        Account accountTo = accountDao.getAccountByAccountId(transfer.getAccountTo());
+        double transferAmount = transfer.getAmount();
+
+        accountDao.withdraw(accountFrom, transferAmount);
+        accountDao.deposit(accountTo, transferAmount);
+
         transferDao.create(transfer);
     }
 }
