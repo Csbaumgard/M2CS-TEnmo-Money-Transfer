@@ -27,13 +27,15 @@ public class AccountService {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(authToken);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
+        double returned = 0;
 
         try {
             ResponseEntity<Double> currentBalance = restTemplate.exchange(baseUrl + "balance/", HttpMethod.GET, entity, Double.class);
-            return currentBalance.getBody();
+            returned = currentBalance.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return Double.parseDouble(null);
+        return returned;
+
     }
 }
