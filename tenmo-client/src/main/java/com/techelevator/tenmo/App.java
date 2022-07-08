@@ -2,17 +2,24 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 public class App {
 
+    private AuthenticatedUser currentUser;
     private static final String API_BASE_URL = "http://localhost:8080/";
-
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
+    private final AccountService accountService = new AccountService();
 
-    private AuthenticatedUser currentUser;
+//    private final TransferService transferService = new TransferService();
+
 
     public static void main(String[] args) {
         App app = new App();
@@ -57,6 +64,8 @@ public class App {
         currentUser = authenticationService.login(credentials);
         if (currentUser == null) {
             consoleService.printErrorMessage();
+        }  else {         //if not null, then we need to use currentUser accountservice.setAuthToken(currentuser.gettoken) to prove user is logged in
+            accountService.setAuthToken(currentUser.getToken());
         }
     }
 
