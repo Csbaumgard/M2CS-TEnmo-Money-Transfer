@@ -10,6 +10,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import java.security.Principal;
+import java.util.Arrays;
+
 public class App {
 
     private AuthenticatedUser currentUser;
@@ -17,8 +20,7 @@ public class App {
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private final AccountService accountService = new AccountService();
-
-//    private final TransferService transferService = new TransferService();
+    private final TransferService transferService = new TransferService();
 
 
     public static void main(String[] args) {
@@ -95,18 +97,17 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-        accountService.viewCurrentBalance();
-		
+        System.out.println(accountService.viewCurrentBalance());
 	}
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
-		
+        System.out.println(Arrays.toString(transferService.listTransfersForUser(currentUser)));
 	}
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
-		
+        // System.out.println(transferService.listPendingTransfersForUser(currentUser));
 	}
 
 	private void sendBucks() {

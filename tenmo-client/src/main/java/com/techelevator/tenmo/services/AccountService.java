@@ -36,6 +36,5 @@ public class AccountService {
             BasicLogger.log(e.getMessage());
         }
         return returned;
-
     }
 }
