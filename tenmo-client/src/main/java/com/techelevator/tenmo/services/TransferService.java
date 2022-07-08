@@ -6,7 +6,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class TransferService {
-    private String baseUrl = "http://localhost:8080/";
+    private String baseUrl = "http://localhost:8080";
     private RestTemplate restTemplate = new RestTemplate();
     private HttpEntity httpEntity;
 

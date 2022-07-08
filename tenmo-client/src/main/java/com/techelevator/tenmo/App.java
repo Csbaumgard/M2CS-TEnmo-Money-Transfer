@@ -95,6 +95,7 @@ public class App {
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
+        accountService.viewCurrentBalance();
 		
 	}
 
