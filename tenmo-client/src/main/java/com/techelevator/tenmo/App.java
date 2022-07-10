@@ -1,6 +1,7 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
@@ -112,7 +113,16 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
-		
+
+
+/*
+        double amountToTransfer = 0;
+
+        Transfer transfer = new Transfer();
+        transfer.setAccountFrom(currentUser.getUser().getId()); //provided long, need int - should we change our types?
+        transfer.setAccountTo(/* method we build in account service to filter NOT current user*);
+        transfer.setAmount(amountToTransfer);
+*/
 	}
 
 	private void requestBucks() {
