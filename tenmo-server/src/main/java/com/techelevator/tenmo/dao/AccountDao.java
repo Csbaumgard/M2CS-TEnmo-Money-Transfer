@@ -17,4 +17,9 @@ public interface AccountDao {
     double getBalanceByUserId(int userId);
 
     public Account getAccountByAccountId(int id);
+
+    public int getAccountIdByUserId(int id);
+
+    public void updateAccount(Account account);
 }
+

@@ -92,4 +92,5 @@ public class JdbcTransferDao implements TransferDao {
         transfer.setAmount(rowSet.getDouble("amount"));
         return transfer;
     }
+
 }

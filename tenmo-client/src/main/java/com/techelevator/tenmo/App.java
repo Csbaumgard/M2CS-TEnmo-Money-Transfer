@@ -126,17 +126,14 @@ public class App {
         for (User user : users) {
             System.out.println("User ID - " + user.getId() + " Username - " + user.getUsername());
         }
-        try {
-            Transfer transfer = new Transfer();
-            int currentUserId = Math.toIntExact((currentUser.getUser().getId()));
-            transfer.setAccountFrom(accountService.getAccountByUserId(currentUserId).getAccountId());
-            int destinationUserId = consoleService.promptForUserId("Please enter the destination User ID");
-            transfer.setAccountTo(accountService.getAccountByUserId(destinationUserId).getAccountId());
-            transfer.setAmount(consoleService.promptForTransferAmount("Please enter the amount to transfer."));
-
-            transferService.createTransfer(transfer);
-        } catch (NullPointerException e) {
-            BasicLogger.log(e.getMessage());
+        Transfer transfer = new Transfer();
+        int currentUserId = Math.toIntExact((currentUser.getUser().getId()));
+        transfer.setAccountFrom(accountService.getAccountIdByUserId(currentUserId));
+        int destinationUserId = consoleService.promptForUserId("Please enter the destination User ID");
+        transfer.setAccountTo(accountService.getAccountIdByUserId(destinationUserId));
+        transfer.setAmount(consoleService.promptForTransferAmount("Please enter the amount to transfer."));
+        System.out.println("You got this far!");
+        transferService.createTransfer(transfer);
         }
 
 
@@ -150,7 +147,6 @@ public class App {
         transfer.setAccountTo(/* method we build in account service to filter NOT current user*);
         transfer.setAmount(amountToTransfer);
 */
-	}
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub

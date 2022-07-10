@@ -69,16 +69,16 @@ public class AccountService {
         return accounts;
     }
 
-    public Account getAccountByUserId(int id) {
-        Account account = null;
+    public int getAccountIdByUserId(int id) {
+        Account account = new Account();
         try {
             ResponseEntity<Account> response =
-                    restTemplate.exchange(baseUrl + "tenmo_user/" + id + "/tenmo_account",
+                    restTemplate.exchange(baseUrl + "tenmo_account/" + id,
                             HttpMethod.GET, makeAuthEntity(), Account.class);
             account = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
-        return account;
+        return account.getAccountId();
     }
 }

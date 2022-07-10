@@ -29,7 +29,7 @@ public class TransferService {
 
 
     public Transfer createTransfer(Transfer transfer) {
-        Transfer returnedTransfer = null;
+        Transfer returnedTransfer = new Transfer();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

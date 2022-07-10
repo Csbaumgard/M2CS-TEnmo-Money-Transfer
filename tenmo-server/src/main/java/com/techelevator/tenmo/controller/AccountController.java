@@ -3,12 +3,10 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -34,5 +32,15 @@ public class AccountController {
     @RequestMapping(path = "/tenmo_user", method = RequestMethod.GET)
     public List<User> findAll() {
         return userDao.findAll();
+    }
+
+    @RequestMapping(path = "/tenmo_user/{id}/tenmo_account/account_id", method = RequestMethod.GET)
+    public int getAccountIdByUserId(@PathVariable int id) {
+        return accountDao.getAccountIdByUserId(id);
+    }
+
+    @RequestMapping(path = "/tenmo_account", method = RequestMethod.PUT)
+    public void updateAccount(@RequestBody Account account) {
+        accountDao.updateAccount(account);
     }
 }

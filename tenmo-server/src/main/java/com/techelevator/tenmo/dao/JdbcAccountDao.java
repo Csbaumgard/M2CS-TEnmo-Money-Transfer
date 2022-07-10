@@ -65,4 +65,23 @@ public class JdbcAccountDao implements AccountDao{
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?";
         return mapRowToAccount((jdbcTemplate.queryForRowSet(sql, accountId)));
     }
+
+    @Override
+    public int getAccountIdByUserId(int id) {
+        String sql = "SELECT * " +
+                "FROM tenmo_account " +
+                "JOIN tenmo_user USING (user_id) " +
+                "WHERE user_id = ?;";
+        Account account = mapRowToAccount(jdbcTemplate.queryForRowSet(sql, Account.class, id));
+        return account.getAccountId();
+    }
+
+    @Override
+    public void updateAccount(Account account) {
+        String sql = "UPDATE tenmo_account " +
+                "SET balance = ? " +
+                "WHERE account_id = ?";
+
+        jdbcTemplate.update(sql, account.getBalance(), account.getAccountId());
+    }
 }
