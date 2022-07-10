@@ -28,25 +28,25 @@ public class TransferService {
     }
 
 
-    public Transfer createTransfer(Transfer transfer) {
-        Transfer returnedTransfer = new Transfer();
-
+    public void createTransfer(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
-        HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
+        HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
-        String url = baseUrl + "/tenmo_transfer/" + transfer.getTransferId();
+        String url = baseUrl + "/tenmo_transfer";
 
         try {
-            ResponseEntity<Transfer> response = restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class);
-            if (response.hasBody()) {
-                returnedTransfer = response.getBody();
+            restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class);
+        } catch(RestClientResponseException e) {
+            if (e.getMessage().contains("You're broke, bud")) {
+                System.out.println("You don't have enough money for that transaction.");
+            } else {
+                System.out.println("Could not complete request. Code: " + e.getRawStatusCode());
             }
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
+        } catch(ResourceAccessException e) {
+            System.out.println("Could not complete request due to server network issue. Please try again.");
         }
-        return returnedTransfer;
     }
 
     public TransferService() {

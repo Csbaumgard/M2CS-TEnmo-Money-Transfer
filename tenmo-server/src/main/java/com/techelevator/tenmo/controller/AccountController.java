@@ -12,7 +12,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@PreAuthorize("isAuthenticated()")
+//@PreAuthorize("isAuthenticated()")
 public class AccountController {
     private AccountDao accountDao;
     private UserDao userDao; //had to add this so we could use the method userDao.findIdByUsername built for us already
@@ -39,8 +39,8 @@ public class AccountController {
         return accountDao.getAccountIdByUserId(id);
     }
 
-    @RequestMapping(path = "/tenmo_account", method = RequestMethod.PUT)
-    public void updateAccount(@RequestBody Account account) {
+    @RequestMapping(path = "/tenmo_account/{id}", method = RequestMethod.PUT)
+    public void updateAccount(@RequestBody Account account, @PathVariable int id) {
         accountDao.updateAccount(account);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.security.Principal;
+import java.text.NumberFormat;
 import java.util.Arrays;
 
 public class App {
@@ -24,6 +25,7 @@ public class App {
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
     private final AccountService accountService = new AccountService();
     private final TransferService transferService = new TransferService();
+
 
 
     public static void main(String[] args) {
@@ -97,10 +99,12 @@ public class App {
             consoleService.pause();
         }
     }
-
+    //String formattedAmount = NumberFormat.getCurrencyInstance().format(amount);
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-        System.out.println(accountService.viewCurrentBalance());
+        double balance = accountService.viewCurrentBalance();
+        String formattedAmount = NumberFormat.getCurrencyInstance().format(balance);
+        System.out.println("Your current balance: " + formattedAmount);
 	}
 
 	private void viewTransferHistory() {
