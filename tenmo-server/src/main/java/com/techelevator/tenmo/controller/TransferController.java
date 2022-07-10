@@ -60,7 +60,7 @@ public class TransferController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/tenmo_transfer/{id}", method = RequestMethod.POST) //i think we need to delete {id}
+    @RequestMapping(path = "/tenmo_transfer/", method = RequestMethod.POST) //i think we need to delete {id}
     public void create(@RequestBody Transfer transfer) {
         Account accountFrom = accountDao.getAccountByAccountId(transfer.getAccountFrom());
         Account accountTo = accountDao.getAccountByAccountId(transfer.getAccountTo());
