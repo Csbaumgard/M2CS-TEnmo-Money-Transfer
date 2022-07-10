@@ -13,25 +13,19 @@ import java.security.Principal;
 import java.util.List;
 
 public class TransferService {
-    private String baseUrl = "http://localhost:8080";
-    private RestTemplate restTemplate = new RestTemplate();
-
-    private String authToken = null;
+    private String authToken;
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
 
-    public TransferService(AuthenticatedUser loggedInUser, String baseUrl) {
-        this.baseUrl = baseUrl;
-        //httpEntity = new HttpEntity(loggedInUser); //need the token somehow
-    }
-
+    private String baseUrl = "http://localhost:8080/";
+    private RestTemplate restTemplate = new RestTemplate();
 
     public void createTransfer(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Transfer> entity = new HttpEntity(transfer, headers);
 
         String url = baseUrl + "/tenmo_transfer";

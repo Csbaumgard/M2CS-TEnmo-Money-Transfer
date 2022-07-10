@@ -73,6 +73,7 @@ public class App {
             consoleService.printErrorMessage();
         }  else {         //if not null, then we need to use currentUser accountservice.setAuthToken(currentuser.gettoken) to prove user is logged in
             accountService.setAuthToken(currentUser.getToken());
+            transferService.setAuthToken(currentUser.getToken());
         }
     }
 
