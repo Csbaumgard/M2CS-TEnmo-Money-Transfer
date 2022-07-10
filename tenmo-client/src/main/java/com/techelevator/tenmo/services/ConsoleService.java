@@ -88,4 +88,25 @@ public class ConsoleService {
         System.out.println("An error occurred. Check the log for details.");
     }
 
+    public int promptForUserId(String prompt) {
+        System.out.println(prompt);
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
+
+    public double promptForTransferAmount(String prompt) {
+        System.out.println(prompt);
+        while (true) {
+            try {
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number.");
+            }
+        }
+    }
 }

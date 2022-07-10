@@ -2,11 +2,13 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.TransferService;
+import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -102,9 +104,16 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
-        System.out.println(Arrays.toString(transferService.listTransfersForUser(currentUser)));
-	}
+        // TODO Auto-generated method stub
+        Transfer[] transfers = transferService.listTransfersForUserID(currentUser);
+        if (transfers == null) {
+            System.out.println("You have no transfers.");
+        } else {
+            for (Transfer transfer : transfers) {
+                System.out.println(transfer);
+            }
+        }
+    }
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
@@ -113,8 +122,26 @@ public class App {
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
+        User[] users = accountService.listOfUsers();
+        for (User user : users) {
+            System.out.println("User ID - " + user.getId() + " Username - " + user.getUsername());
+        }
+        try {
+            Transfer transfer = new Transfer();
+            int currentUserId = Math.toIntExact((currentUser.getUser().getId()));
+            transfer.setAccountFrom(accountService.getAccountByUserId(currentUserId).getAccountId());
+            int destinationUserId = consoleService.promptForUserId("Please enter the destination User ID");
+            transfer.setAccountTo(accountService.getAccountByUserId(destinationUserId).getAccountId());
+            transfer.setAmount(consoleService.promptForTransferAmount("Please enter the amount to transfer."));
+
+            transferService.createTransfer(transfer);
+        } catch (NullPointerException e) {
+            BasicLogger.log(e.getMessage());
+        }
 
 
+
+        //transferService.createTransfer(currentUser, );
 /*
         double amountToTransfer = 0;
 
@@ -127,7 +154,5 @@ public class App {
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
-		
-	}
-
+    }
 }
