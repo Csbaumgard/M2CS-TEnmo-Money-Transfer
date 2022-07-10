@@ -12,11 +12,14 @@ import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
+@SuppressWarnings("EmptyMethod")
 public class App {
 
     private AuthenticatedUser currentUser;
@@ -102,15 +105,46 @@ public class App {
     }
     //String formattedAmount = NumberFormat.getCurrencyInstance().format(amount);
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-        double balance = accountService.viewCurrentBalance();
-        String formattedAmount = NumberFormat.getCurrencyInstance().format(balance);
-        System.out.println("Your current balance: " + formattedAmount);
+		handleViewBalance();
 	}
 
 	private void viewTransferHistory() {
-        // TODO Auto-generated method stub
-        Transfer[] transfers = transferService.listTransfersForUserID(currentUser);
+        handleListTransfers();
+    }
+
+	private void viewPendingRequests() {
+		// TODO Auto-generated method stub
+        // System.out.println(transferService.listPendingTransfersForUser(currentUser));
+	}
+
+	private void sendBucks() {
+        handleSendBucks();
+    }
+	private void requestBucks() {
+		// TODO Auto-generated method stub
+    }
+
+    private void handleSendBucks() {
+        User[] users = accountService.listOfUsers();
+        for (User user : users) {
+            System.out.println("User ID - " + user.getId() + " Username - " + user.getUsername());
+        }
+        try {
+            Transfer transfer = new Transfer();
+            transfer.setTransferId(transfer.getTransferId());
+            transfer.setTransferTypeId(transfer.getTransferTypeId());
+            transfer.setTransferStatusId(transfer.getTransferStatusId());
+            transfer.setAccountFrom(accountService.getAccountIdByUserId(Math.toIntExact(currentUser.getUser().getId())));
+            transfer.setAccountTo(accountService.getAccountIdByUserId(consoleService.promptForUserId("Provide User ID: ")));
+            transfer.setAmount(consoleService.promptForTransferAmount("Provide transfer amount: "));
+            transferService.createTransfer(transfer);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+    }
+
+    private void handleListTransfers() {
+        Transfer[] transfers = transferService.listTransfersForUserID(currentUser.getUser().getId());
         if (transfers == null) {
             System.out.println("You have no transfers.");
         } else {
@@ -120,40 +154,9 @@ public class App {
         }
     }
 
-	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-        // System.out.println(transferService.listPendingTransfersForUser(currentUser));
-	}
-
-	private void sendBucks() {
-		// TODO Auto-generated method stub
-        User[] users = accountService.listOfUsers();
-        for (User user : users) {
-            System.out.println("User ID - " + user.getId() + " Username - " + user.getUsername());
-        }
-        Transfer transfer = new Transfer();
-        int currentUserId = Math.toIntExact((currentUser.getUser().getId()));
-        transfer.setAccountFrom(accountService.getAccountIdByUserId(currentUserId));
-        int destinationUserId = consoleService.promptForUserId("Please enter the destination User ID");
-        transfer.setAccountTo(accountService.getAccountIdByUserId(destinationUserId));
-        transfer.setAmount(consoleService.promptForTransferAmount("Please enter the amount to transfer."));
-        System.out.println("You got this far!");
-        transferService.createTransfer(transfer);
-        }
-
-
-
-        //transferService.createTransfer(currentUser, );
-/*
-        double amountToTransfer = 0;
-
-        Transfer transfer = new Transfer();
-        transfer.setAccountFrom(currentUser.getUser().getId()); //provided long, need int - should we change our types?
-        transfer.setAccountTo(/* method we build in account service to filter NOT current user*);
-        transfer.setAmount(amountToTransfer);
-*/
-
-	private void requestBucks() {
-		// TODO Auto-generated method stub
+    private void handleViewBalance() {
+        double balance = accountService.viewCurrentBalance();
+        String formattedAmount = NumberFormat.getCurrencyInstance().format(balance);
+        System.out.println("Your current balance: " + formattedAmount);
     }
 }

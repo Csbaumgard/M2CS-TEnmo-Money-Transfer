@@ -56,24 +56,21 @@ public class JdbcAccountDao implements AccountDao{
     @Override
     public double getBalanceByUserId(int userId) { //might need to refactor to use user.name and Principal? idfk
         String sql = "SELECT balance FROM tenmo_account WHERE user_id = ?";
-        double balance = jdbcTemplate.queryForObject(sql, double.class, userId);
-        return balance;
+        return jdbcTemplate.queryForObject(sql, double.class, userId);
     }
 
     @Override
     public Account getAccountByAccountId(int accountId) {
         String sql = "SELECT * FROM tenmo_account WHERE account_id = ?";
-        return mapRowToAccount((jdbcTemplate.queryForRowSet(sql, accountId)));
+        return mapRowToAccount(jdbcTemplate.queryForRowSet(sql, accountId, Account.class));
     }
 
     @Override
     public int getAccountIdByUserId(int id) {
-        String sql = "SELECT * " +
+        String sql = "SELECT account_id " +
                 "FROM tenmo_account " +
-                "JOIN tenmo_user USING (user_id) " +
                 "WHERE user_id = ?;";
-        Account account = mapRowToAccount(jdbcTemplate.queryForRowSet(sql, Account.class, id));
-        return account.getAccountId();
+        return jdbcTemplate.queryForObject(sql, Integer.class, id);
     }
 
     @Override

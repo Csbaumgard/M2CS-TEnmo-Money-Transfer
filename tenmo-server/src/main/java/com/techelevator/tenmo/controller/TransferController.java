@@ -1,21 +1,22 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.*;
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.TransferStatus;
 import com.techelevator.tenmo.model.TransferType;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class TransferController {
-    private TransferDao transferDao;
-    private TransferStatusDao transferStatusDao;
-    private TransferTypeDao transferTypeDao;
-    private AccountDao accountDao;
+    private final TransferDao transferDao;
+    private final TransferStatusDao transferStatusDao;
+    private final TransferTypeDao transferTypeDao;
+    private final AccountDao accountDao;
 
     public TransferController(TransferDao transferDao, TransferStatusDao transferStatusDao, TransferTypeDao transferTypeDao, AccountDao accountDao) {
         this.transferDao = transferDao;
@@ -59,15 +60,15 @@ public class TransferController {
         return transferStatusDao.getTransferStatusFromDesc(desc);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/tenmo_transfer/", method = RequestMethod.POST) //i think we need to delete {id}
+    //@ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.POST) //i think we need to delete {id}
     public void create(@RequestBody Transfer transfer) {
-        Account accountFrom = accountDao.getAccountByAccountId(transfer.getAccountFrom());
-        Account accountTo = accountDao.getAccountByAccountId(transfer.getAccountTo());
+        int accountFrom = transfer.getAccountFrom();
+        int accountTo = transfer.getAccountTo();
         double transferAmount = transfer.getAmount();
 
-        accountDao.withdraw(accountFrom, transferAmount);
-        accountDao.deposit(accountTo, transferAmount);
+        accountDao.withdraw(accountDao.getAccountByAccountId(accountFrom), transferAmount);
+        accountDao.deposit(accountDao.getAccountByAccountId(accountTo), transferAmount);
 
         transferDao.create(transfer);
     }
