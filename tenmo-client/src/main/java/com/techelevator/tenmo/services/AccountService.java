@@ -72,7 +72,7 @@ public class AccountService {
     public int getAccountIdByUserId(int id) {
         int accountId = 0;
         try {
-            ResponseEntity<Integer> response = restTemplate.exchange(baseUrl + "tenmo_account/" + id + "/account_id", HttpMethod.GET, makeAuthEntity(), Integer.class);
+            ResponseEntity<Integer> response = restTemplate.exchange(baseUrl + "/account_id" + id, HttpMethod.GET, makeAuthEntity(), Integer.class);
             accountId = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
