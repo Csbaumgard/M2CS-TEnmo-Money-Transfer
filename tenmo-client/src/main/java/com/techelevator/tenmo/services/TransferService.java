@@ -6,6 +6,7 @@ import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,11 +16,23 @@ import java.util.List;
 public class TransferService {
     private String baseUrl = "http://localhost:8080";
     private RestTemplate restTemplate = new RestTemplate();
-    private HttpEntity httpEntity;
+    //private HttpEntity httpEntity;
 
     public TransferService(AuthenticatedUser loggedInUser, String baseUrl) {
         this.baseUrl = baseUrl;
-        httpEntity = new HttpEntity(loggedInUser); //need the token somehow
+        //httpEntity = new HttpEntity(loggedInUser); //need the token somehow
+    }
+
+
+    public void createTransfer(AuthenticatedUser authenticatedUser, Transfer transfer) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authenticatedUser.getToken());
+        HttpEntity<Transfer> entity = new HttpEntity<>(transfer, headers);
+
+        String url = baseUrl + "/tenmo_transfer/" + transfer.getTransferId();
+
+        restTemplate.exchange(url, HttpMethod.POST, entity, Transfer.class);
     }
 
     public TransferService() {
