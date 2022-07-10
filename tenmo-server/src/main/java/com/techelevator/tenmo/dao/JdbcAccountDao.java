@@ -42,7 +42,7 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     @Override
-    public void withdraw(Account account, double transferAmount) {
+    public void withdraw(Account account, double transferAmount) {  //something in here is null --WHY
         String sql = "UPDATE tenmo_account SET balance = balance - ? WHERE user_id = ?";
         jdbcTemplate.update(sql, transferAmount, account.getUserId());
     }
@@ -61,8 +61,15 @@ public class JdbcAccountDao implements AccountDao{
 
     @Override
     public Account getAccountByAccountId(int accountId) {
-        String sql = "SELECT * FROM tenmo_account WHERE account_id = ?";
-        return mapRowToAccount(jdbcTemplate.queryForRowSet(sql, accountId, Account.class));
+        String sql = "SELECT account_id, user_id, balance FROM tenmo_account WHERE account_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId); //we replaced the mapRowToAccount method below with a loop that's tested to work, same errors 500
+        Account account = null;
+        if (results.next()) {
+            account = mapRowToAccount(results);
+        }
+        return account;
+
+//            return mapRowToAccount(jdbcTemplate.queryForRowSet(sql, accountId));
     }
 
     @Override

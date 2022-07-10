@@ -44,7 +44,7 @@ public class TransferService {
     public Transfer[] listTransfersForUserID(long userId) {
         Transfer[] transfers = null;
         try {
-            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "/tenmo_account/" + userId + "/tenmo_transfer", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
+            ResponseEntity<Transfer[]> response = restTemplate.exchange(baseUrl + "tenmo_account/" + userId + "tenmo_transfer", HttpMethod.GET, makeAuthEntity(), Transfer[].class);
             transfers = response.getBody();
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
@@ -65,7 +65,7 @@ public class TransferService {
     public Transfer getTransferById(int id) {
         Transfer transfer = null;
         try {
-            transfer = restTemplate.getForObject(baseUrl + "/tenmo_transfer/" + id, Transfer.class);
+            transfer = restTemplate.getForObject(baseUrl + "tenmo_transfer/" + id, Transfer.class);
         } catch (Exception e) {
             BasicLogger.log(e.getMessage());
         }
