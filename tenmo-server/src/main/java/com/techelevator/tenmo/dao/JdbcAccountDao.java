@@ -59,6 +59,8 @@ public class JdbcAccountDao implements AccountDao{
         return jdbcTemplate.queryForObject(sql, double.class, userId);
     }
 
+
+    // This one is BADSQLGRAMMAR
     @Override
     public Account getAccountByAccountId(int accountId) {
         String sql = "SELECT account_id, user_id, balance FROM tenmo_account WHERE account_id = ?";
@@ -71,6 +73,8 @@ public class JdbcAccountDao implements AccountDao{
 
 //            return mapRowToAccount(jdbcTemplate.queryForRowSet(sql, accountId));
     }
+
+
 
     @Override
     public int getAccountIdByUserId(int id) {
