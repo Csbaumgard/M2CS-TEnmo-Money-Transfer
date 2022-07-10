@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@PreAuthorize("isAuthenticated")
+@PreAuthorize("isAuthenticated()")
 public class AccountController {
     private AccountDao accountDao;
     private UserDao userDao; //had to add this so we could use the method userDao.findIdByUsername built for us already
