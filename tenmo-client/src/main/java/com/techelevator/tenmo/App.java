@@ -135,9 +135,12 @@ public class App {
             transfer.setTransferTypeId(transfer.getTransferTypeId());
             transfer.setTransferStatusId(transfer.getTransferStatusId());
             transfer.setAccountFrom(accountService.getAccountIdByUserId(Math.toIntExact(currentUser.getUser().getId())));
+            //if (accountService.getAccountIdByUserId(consoleService.promptForUserId("Provide User ID: ")) == transfer.getAccountFrom) {
+            // System.out.println("You cannot send money to yourself.");
+
             transfer.setAccountTo(accountService.getAccountIdByUserId(consoleService.promptForUserId("Provide User ID: ")));
             transfer.setAmount(consoleService.promptForTransferAmount("Provide transfer amount: "));
-            transferService.createTransfer(transfer);
+            transferService.createTransfer(transfer); //calling this doesn't create the whole transfer
         } catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }

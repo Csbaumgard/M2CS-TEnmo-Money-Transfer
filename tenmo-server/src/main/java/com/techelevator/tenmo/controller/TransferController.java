@@ -62,15 +62,15 @@ public class TransferController {
     }
 
     //@ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.POST) //i think we need to delete {id}
+    @RequestMapping(path = "/tenmo_transfer", method = RequestMethod.POST)
     public void create(@RequestBody Transfer transfer) {
         int accountFrom = transfer.getAccountFrom();
         int accountTo = transfer.getAccountTo();
         double transferAmount = transfer.getAmount();
 
-        accountDao.withdraw(accountDao.getAccountByAccountId(accountFrom), transferAmount);
+        accountDao.withdraw(accountDao.getAccountByAccountId(accountFrom), transferAmount); //throwing null, won't update
         accountDao.deposit(accountDao.getAccountByAccountId(accountTo), transferAmount);
 
-        transferDao.create(transfer);
+        transferDao.create(transfer); //transfer doesn't appear where it should once created
     }
 }

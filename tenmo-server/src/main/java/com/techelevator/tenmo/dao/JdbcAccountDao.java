@@ -44,7 +44,7 @@ public class JdbcAccountDao implements AccountDao{
     @Override
     public void withdraw(Account account, double transferAmount) {  //something in here is null --WHY
         String sql = "UPDATE tenmo_account SET balance = balance - ? WHERE user_id = ?";
-        jdbcTemplate.update(sql, transferAmount, account.getUserId());
+        jdbcTemplate.update(sql, transferAmount, account.getUserId());  //best guess is account.getUserId is upset
     }
 
     @Override
